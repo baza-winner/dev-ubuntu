@@ -1,7 +1,7 @@
 
 # Описание
 
-Проект по сборке базового образа `dev-ubuntu`, используемого в dev-docker-контейнерах проектов (baza-winner)[https://github.com/baza-winner]
+Проект по сборке базового образа `dev-ubuntu`, используемого в dev-docker-контейнерах проектов [baza-winner](https://github.com/baza-winner)
 
 # Настройка окружения
 
