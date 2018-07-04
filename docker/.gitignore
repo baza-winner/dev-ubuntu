@@ -1,2 +1,4 @@
 main.env
 .env
+docker-compose.main.yml
+docker-compose.nginx.yml

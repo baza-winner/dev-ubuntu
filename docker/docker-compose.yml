@@ -3,24 +3,8 @@ services:
   main:
     container_name: $_dubuDockerContainerName
     image: $_dubuDockerImageName
-    volumes:
-      - ${_bwDir}:/home/dev/.bw
-      - ${_bwFileSpec}:/home/dev/bw.bash
-      - ..:/home/dev/proj
-    stdin_open: true
-    env_file:
-      - main.env
   nginx:
     container_name: ${_dubuDockerContainerName}-nginx
-    image: nginx
-    volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./nginx/main.conf:/etc/nginx/main.conf
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ${_bwDir}/https/server.crt:/etc/ssl/server.crt
-      - ${_bwDir}/https/server.key:/etc/ssl/server.key
-      - ./nginx/log:/var/log/nginx
-      - ..:/etc/nginx/html
     depends_on:
       - main
     ports:

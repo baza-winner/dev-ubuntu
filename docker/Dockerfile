@@ -70,18 +70,18 @@ true
 # ==============================================================================
 # =============================== USER dev =====================================
 
-# # Add user "dev" as non-root user && Set sudoer for "dev"
-# RUN \
-#   useradd -ms /bin/bash dev && \
-#   echo 'dev ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers && \
-# true
+# Add user "dev" as non-root user && Set sudoer for "dev"
+RUN \
+  useradd -ms /bin/bash dev && \
+  echo 'dev ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers && \
+true
 
-# # Switch to user "dev" from now
-# USER dev
+# Switch to user "dev" from now
+USER dev
 
-# WORKDIR /home/dev/proj
+WORKDIR /home/dev/proj
 
-# ENTRYPOINT /bin/bash
+ENTRYPOINT /bin/bash
 
 # ==============================================================================
 # ==============================================================================
