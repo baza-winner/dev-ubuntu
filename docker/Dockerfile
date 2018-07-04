@@ -9,6 +9,20 @@ MAINTAINER Yury Bikuzin <yury.bikuzin@baza-winner.ru>
 # ==============================================================================
 # borrowed from: https://github.com/creationix/nvm/blob/master/Dockerfile
 
+# Prevent dialog during apt install
+ENV DEBIAN_FRONTEND noninteractive
+
+# Pick a Ubuntu apt mirror site for better speed
+# ref: https://launchpad.net/ubuntu/+archivemirrors
+ENV UBUNTU_APT_SITE ubuntu.cs.utah.edu
+
+# Disable src package source
+RUN sed -i 's/^deb-src\ /\#deb-src\ /g' /etc/apt/sources.list
+
+# Replace origin apt package site with the mirror site
+RUN sed -E -i "s/([a-z]+.)?archive.ubuntu.com/$UBUNTU_APT_SITE/g" /etc/apt/sources.list
+RUN sed -i "s/security.ubuntu.com/$UBUNTU_APT_SITE/g" /etc/apt/sources.list
+
 # Install apt packages
 RUN apt update         && \
     apt upgrade -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"  && \

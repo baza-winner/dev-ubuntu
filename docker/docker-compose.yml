@@ -10,8 +10,6 @@ services:
     stdin_open: true
     env_file:
       - main.env
-    # expose:
-      # - 6783
   nginx:
     container_name: ${_dubuDockerContainerName}-nginx
     image: nginx
