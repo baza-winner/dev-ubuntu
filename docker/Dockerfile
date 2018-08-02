@@ -68,6 +68,15 @@ RUN \
 true
 
 # ==============================================================================
+# =============================== dumb-init  ===================================
+# https://github.com/Yelp/dumb-init
+
+RUN wget -O /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64
+RUN chmod +x /usr/local/bin/dumb-init
+ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
+CMD [ "bash" ]
+
+# ==============================================================================
 # =============================== USER dev =====================================
 
 # Add user "dev" as non-root user && Set sudoer for "dev"
@@ -80,8 +89,6 @@ true
 USER dev
 
 WORKDIR /home/dev/proj
-
-ENTRYPOINT /bin/bash
 
 # ==============================================================================
 # ==============================================================================

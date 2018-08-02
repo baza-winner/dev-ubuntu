@@ -1,12 +1,9 @@
 version: '2'
 services:
   main:
-    container_name: $_dubuDockerContainerName
-    image: $_dubuDockerImageName
   nginx:
-    container_name: ${_dubuDockerContainerName}-nginx
     depends_on:
       - main
     ports:
-      - ${_dubuDockerHttp}:80
-      - ${_dubuDockerHttps}:443
+      - ${http}:80
+      - ${https}:443
