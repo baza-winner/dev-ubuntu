@@ -1,0 +1,9 @@
+version: '2'
+services:
+  main:
+  nginx:
+    depends_on:
+      - main
+    ports:
+      - ${http}:80
+      - ${https}:443

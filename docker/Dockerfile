@@ -77,6 +77,37 @@ ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
 CMD [ "bash" ]
 
 # ==============================================================================
+# ============================= openssh-server =================================
+# https://docs.docker.com/engine/examples/running_ssh_service/
+
+RUN apt-get update && apt-get install -y openssh-server
+RUN mkdir /var/run/sshd
+RUN sudo /usr/bin/ssh-keygen -A
+EXPOSE 22
+
+# ==============================================================================
+# ================================ locale ======================================
+
+# https://www.thomas-krenn.com/en/wiki/Configure_Locales_in_Ubuntu
+# RUN update-locale ru_RU.utf8
+
+# https://stackoverflow.com/questions/28405902/how-to-set-the-locale-inside-a-ubuntu-docker-container/28406007#28406007
+# Set the locale
+RUN locale-gen en_US.UTF-8
+# RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
+ENV LANG en_US.UTF-8  
+ENV LANGUAGE en_US:en  
+ENV LC_ALL en_US.UTF-8
+
+# Skype:
+
+# 2018-08-16 17:53
+# Алексей, хотел уточнить, какая локаль используется на наших Ubuntu-серверах в production?
+
+# Алексей 2018-08-16 17:58
+# специально не задаем, по умолчанию на разных дистрибутивах, по разному, где C.UTF-8, где en_US.UTF-8
+
+# ==============================================================================
 # =============================== USER dev =====================================
 
 # Add user "dev" as non-root user && Set sudoer for "dev"
@@ -89,6 +120,31 @@ true
 USER dev
 
 WORKDIR /home/dev/proj
+
+# ==============================================================================
+# ==============================================================================
+
+# все добавки к .bashrc далее будем писать в ._bashrc
+# приходиться использовать ._bashrc, т.к. в .bashrc есть блокировка от его 
+# исполнения в неинтерактивном режиме (наверное, обосоновання)
+# чтобы можно было прочитать "наши" настройки в неинтерактином режиме, 
+# используем для их хранения ._bashrc
+RUN echo ". $HOME/._bashrc" >> "$HOME/.bashrc" 
+
+# ==============================================================================
+# ==============================================================================
+
+# https://docs.docker.com/engine/examples/running_ssh_service/#environment-variables
+RUN echo ". $HOME/proj/docker/main.env" >> "$HOME/._bashrc"
+
+# ==============================================================================
+# ================================ nvm =========================================
+
+COPY nvm /home/dev/.nvm
+RUN sudo chown -R dev $HOME/.nvm
+RUN echo 'export NVM_DIR="$HOME/.nvm"' >> $HOME/._bashrc
+RUN echo '. "$NVM_DIR/nvm.sh"  # This loads nvm' >> $HOME/._bashrc
+RUN echo '. "$NVM_DIR/bash_completion" # This loads nvm bash_completion' >> $HOME/._bashrc
 
 # ==============================================================================
 # ==============================================================================

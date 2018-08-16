@@ -1,0 +1,4 @@
+[submodule "docker/nvm"]
+	path = docker/nvm
+	url = git@github.com:creationix/nvm.git
+	branch = master
