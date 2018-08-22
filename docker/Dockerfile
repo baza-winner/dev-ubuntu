@@ -55,19 +55,6 @@ RUN apt update         && \
     && apt-get clean
 
 # ==============================================================================
-# ============================ ru_RU.UTF-8 =====================================
-
-# https://askubuntu.com/questions/76013/how-do-i-add-locale-to-ubuntu-server
-# https://stackoverflow.com/questions/16507777/set-encoding-and-fileencoding-to-utf-8-in-vim
-RUN \
-  locale-gen ru_RU && \
-  locale-gen ru_RU.UTF-8 && \
-  update-locale && \
-  echo "set encoding=utf-8" >> /etc/vim/vimrc && \
-  echo "set fileencoding=utf-8" >> /etc/vim/vimrc && \
-true
-
-# ==============================================================================
 # =============================== dumb-init  ===================================
 # https://github.com/Yelp/dumb-init
 
@@ -86,18 +73,47 @@ RUN sudo /usr/bin/ssh-keygen -A
 EXPOSE 22
 
 # ==============================================================================
+# ========================= software-properties-common =========================
+# https://docs.docker.com/engine/examples/running_ssh_service/
+
+RUN sudo apt-get install -y --force-yes software-properties-common
+
+# ==============================================================================
+# =============================== man ==========================================
+
+RUN sudo apt-get install -y --force-yes man
+
+# ==============================================================================
 # ================================ locale ======================================
 
 # https://www.thomas-krenn.com/en/wiki/Configure_Locales_in_Ubuntu
 # RUN update-locale ru_RU.utf8
 
+# нужна, чтобы во время `. ~/bw.bash` не было 
+# perl: warning: Falling back to the standard locale ("C").
+# perl: warning: Setting locale failed.
+# perl: warning: Please check that your locale settings:
+#     LANGUAGE = (unset),
+#     LC_ALL = (unset),
+#     LANG = "ru_RU.UTF-8"
+#     are supported and installed on your system.
+RUN locale-gen ru_RU.utf8
+
 # https://stackoverflow.com/questions/28405902/how-to-set-the-locale-inside-a-ubuntu-docker-container/28406007#28406007
 # Set the locale
 RUN locale-gen en_US.UTF-8
+RUN dpkg-reconfigure locales
 # RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
 ENV LANG en_US.UTF-8  
 ENV LANGUAGE en_US:en  
 ENV LC_ALL en_US.UTF-8
+
+# https://askubuntu.com/questions/76013/how-do-i-add-locale-to-ubuntu-server
+# https://stackoverflow.com/questions/16507777/set-encoding-and-fileencoding-to-utf-8-in-vim
+RUN \
+  echo "set encoding=utf-8" >> /etc/vim/vimrc && \
+  echo "set fileencoding=utf-8" >> /etc/vim/vimrc && \
+true
 
 # Skype:
 
@@ -106,6 +122,16 @@ ENV LC_ALL en_US.UTF-8
 
 # Алексей 2018-08-16 17:58
 # специально не задаем, по умолчанию на разных дистрибутивах, по разному, где C.UTF-8, где en_US.UTF-8
+
+# ==============================================================================
+# ================================ timezone ====================================
+
+RUN \
+  sudo bash -c "echo 'Europe/Moscow' > /etc/timezone" && \
+  sudo dpkg-reconfigure --frontend noninteractive tzdata && \
+true
+
+ENV TZ Europe/Moscow
 
 # ==============================================================================
 # =============================== USER dev =====================================
