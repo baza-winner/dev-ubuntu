@@ -1,7 +1,0 @@
-
-<pre>
-  projName: ${projName}
-  projShortcut: ${projShortcut}
-  http: ${http}
-  https: ${https}
-</pre>
