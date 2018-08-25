@@ -15,13 +15,13 @@ bw project dubu
  
 # Использование
 
-## Сборка образа `dev-ubuntu`
+## Сборка образа
 
 ```
 dubu docker build
 ```
 
-## Push образа `dev-ubuntu`
+## Push образа
 
 ```
 _docker login
