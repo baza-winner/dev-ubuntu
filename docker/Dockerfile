@@ -173,4 +173,9 @@ RUN echo '. "$NVM_DIR/nvm.sh"  # This loads nvm' >> $HOME/._bashrc
 RUN echo '. "$NVM_DIR/bash_completion" # This loads nvm bash_completion' >> $HOME/._bashrc
 
 # ==============================================================================
+# ================================ gawk ========================================
+
+RUN DEBIAN_FRONTEND=noninteractive sudo apt-get install -y gawk
+
+# ==============================================================================
 # ==============================================================================
